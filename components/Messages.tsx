@@ -209,7 +209,7 @@ export default function Messages({
               <div key={item.id} className="flex flex-col-reverse">
                 <div key={item.id} className="chat-bubble">
                   {item.from == user?.id ? (
-                    <div className={`${item.reply_to ? "mt-5" : ""} relative w-full flex items-center gap-3`}>
+                    <div className={`${item.reply_to ? "mt-5" : ""} relative w-full flex items-center gap-3 `}>
                       <ChatBubble msg={item} type="own" />
                       <div className="min-w-[22px]">
                         <DropdownMenu>
