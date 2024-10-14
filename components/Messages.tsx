@@ -239,7 +239,9 @@ export default function Messages({
                     </div>
                   ) : (
                     <div
-                      className={`${item.reply_to ? "mt-5" : ""} relative w-full flex justify-start items-center gap-3`}
+                      className={`${
+                        item.reply_to ? "mt-5" : ""
+                      } relative w-full flex justify-start items-center gap-3 `}
                     >
                       <ChatBubble msg={item} type="other" />
                       {user && (
