@@ -3,6 +3,11 @@ import {hourminute, msgDate} from "@/lib/datesFormats";
 import {MessagesType} from "@/lib/types";
 import {User2} from "lucide-react";
 import React from "react";
+import {Dialog, DialogTrigger} from "./ui/dialog";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "./ui/dropdown-menu";
+import Link from "next/link";
+import {startConversation} from "@/actions/conversations";
+import {useRouter} from "next/navigation";
 
 type props = {
   msg: MessagesType;
@@ -10,6 +15,14 @@ type props = {
 };
 
 export default function ChatBubble({msg, type}: props) {
+  const router = useRouter();
+  const sendDM = async (to: string) => {
+    //
+    const {url} = JSON.parse(await startConversation(to, ""));
+    if (url) {
+      router.push(url);
+    }
+  };
   return (
     <div className="relative">
       {msg.reply_to != msg.id && (
@@ -45,7 +58,31 @@ export default function ChatBubble({msg, type}: props) {
         </div>
         <div className="">
           <div className="flex items-center gap-2">
-            <div className={`text-nowrap ${type == "own" ? "text-primary" : ""}`}>{msg.from_user.username}</div>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div
+                  className={`text-nowrap ${
+                    type == "own" ? "text-primary" : ""
+                  } relative before:absolute before:w-0 before:h-[1px] before:bg-primary before:bottom-0 before:left-0 hover:before:w-full before:transition-all before:duration-300`}
+                >
+                  {msg.from_user.username}
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                <DropdownMenuItem>
+                  <Link href={`/profile/${msg.public_id}`}>Profile</Link>
+                </DropdownMenuItem>
+                {type == "other" && (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      sendDM(msg.from);
+                    }}
+                  >
+                    Dirct Message
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
             <div className="text-muted-foreground text-sm">{msgDate(msg.created_at)}</div>
             {msg.updated_at && <div className="text-muted-foreground text-sm">({"edited"})</div>}
           </div>

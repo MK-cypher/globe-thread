@@ -7,6 +7,7 @@ export type MessagesType = {
   to?: string;
   text: string;
   reply_to?: string;
+  public_id?: string;
   to_user?: {
     username: string;
     avatar: string;

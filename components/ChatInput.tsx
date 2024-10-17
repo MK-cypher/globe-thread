@@ -93,7 +93,6 @@ export default function ChatInput({
       setEdit({id: null, text: ""});
       setReply({id: null, text: ""});
       if (reply && reply.id) {
-        console.log("reply");
         setOptimisticMessages((prev: any) => [newMsg, ...prev]);
         const {error, variant} = JSON.parse(
           type == "public"

@@ -201,84 +201,88 @@ export default function Messages({
       >
         {optimisticMessages.length > 0 &&
           optimisticMessages.map((item, i) => {
-            const diff = dayDifference(item.created_at, optimisticMessages[i + 1]?.created_at);
+            if (item.text) {
+              const diff = dayDifference(item.created_at, optimisticMessages[i + 1]?.created_at);
 
-            // setPreviousMsg(item);
-            return (
-              // <>
-              <div key={item.id} className="flex flex-col-reverse">
-                <div key={item.id} className="chat-bubble">
-                  {item.from == user?.id ? (
-                    <div className={`${item.reply_to ? "mt-5" : ""} relative w-full flex items-center gap-3 `}>
-                      <ChatBubble msg={item} type="own" />
-                      <div className="min-w-[22px]">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger className="space-y-1 transition-all duration-300 hover:bg-secondary rounded-full py-1 px-2.5 chat-action">
-                            <span className="w-0.5 h-0.5 block bg-foreground rounded-full"></span>
-                            <span className="w-0.5 h-0.5 block bg-foreground rounded-full"></span>
-                            <span className="w-0.5 h-0.5 block bg-foreground rounded-full"></span>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent>
-                            <DropdownMenuItem
-                              onClick={() => {
-                                setEdit({id: item.id, text: item.text});
-                              }}
-                            >
-                              Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() => {
-                                removeMsg(item.id);
-                              }}
-                            >
-                              Remove
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+              // setPreviousMsg(item);
+              return (
+                // <>
+                <div key={item.id} className="flex flex-col-reverse">
+                  <div key={item.id} className="chat-bubble">
+                    {item.from == user?.id ? (
+                      <div className={`${item.reply_to ? "mt-5" : ""} relative w-full flex items-center gap-3 `}>
+                        <ChatBubble msg={item} type="own" />
+                        <div className="min-w-[22px]">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger className="space-y-1 transition-all duration-300 hover:bg-secondary rounded-full py-1 px-2.5 chat-action">
+                              <span className="w-0.5 h-0.5 block bg-foreground rounded-full"></span>
+                              <span className="w-0.5 h-0.5 block bg-foreground rounded-full"></span>
+                              <span className="w-0.5 h-0.5 block bg-foreground rounded-full"></span>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  setEdit({id: item.id, text: item.text});
+                                }}
+                              >
+                                Edit
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  removeMsg(item.id);
+                                }}
+                              >
+                                Remove
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div
-                      className={`${item.reply_to ? "mt-5" : ""} relative w-full flex justify-start items-center gap-3`}
-                    >
-                      <ChatBubble msg={item} type="other" />
-                      {user && (
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger
-                              onClick={() => {
-                                setReply({
-                                  id: item.id,
-                                  text: item.text,
-                                  username: item.from_user.username,
-                                  avatar: item.from_user.avatar,
-                                  updated_at: item.updated_at,
-                                  created_at: item.created_at,
-                                });
-                              }}
-                              className="chat-action transition-all duration-300 hover:bg-secondary rounded-full p-1"
-                            >
-                              <Reply size={18} />
-                            </TooltipTrigger>
-                            <TooltipContent className="z-[100]">
-                              <p>Reply</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      )}
+                    ) : (
+                      <div
+                        className={`${
+                          item.reply_to ? "mt-5" : ""
+                        } relative w-full flex justify-start items-center gap-3`}
+                      >
+                        <ChatBubble msg={item} type="other" />
+                        {user && (
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger
+                                onClick={() => {
+                                  setReply({
+                                    id: item.id,
+                                    text: item.text,
+                                    username: item.from_user.username,
+                                    avatar: item.from_user.avatar,
+                                    updated_at: item.updated_at,
+                                    created_at: item.created_at,
+                                  });
+                                }}
+                                className="chat-action transition-all duration-300 hover:bg-secondary rounded-full p-1"
+                              >
+                                <Reply size={18} />
+                              </TooltipTrigger>
+                              <TooltipContent className="z-[100]">
+                                <p>Reply</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  {diff && (
+                    <div className="my-3 flex items-center gap-5">
+                      <div className="w-full h-0.5 bg-gradient-to-r from-transparent to-foreground/10 "></div>
+                      <div className="shrink-0 text-muted-foreground">{dateSeperator(item.created_at)}</div>
+                      <div className="w-full h-0.5 bg-gradient-to-r from-foreground/10 to-transparent"></div>
                     </div>
                   )}
                 </div>
-                {diff && (
-                  <div className="my-3 flex items-center gap-5">
-                    <div className="w-full h-0.5 bg-gradient-to-r from-transparent to-foreground/10 "></div>
-                    <div className="shrink-0 text-muted-foreground">{dateSeperator(item.created_at)}</div>
-                    <div className="w-full h-0.5 bg-gradient-to-r from-foreground/10 to-transparent"></div>
-                  </div>
-                )}
-              </div>
-              // </>
-            );
+                // </>
+              );
+            }
           })}
       </div>
       <ChatInput

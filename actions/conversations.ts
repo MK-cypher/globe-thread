@@ -41,7 +41,6 @@ export const getConversation = async (id: string, from = 0, to = MSGS_PER_PAGE) 
     .from("conversations")
     .select("*,from_user:from(username, avatar),reply_content:reply_to(reply_user:from(username,avatar),text)")
     .eq("conversation_id", id)
-    .neq("text", "")
     .range(from, to)
     .order("created_at", {ascending: false});
 

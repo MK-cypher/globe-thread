@@ -68,27 +68,36 @@ export default function ConversationsMenu({conversations, user}: {conversations:
             <div className={`${!navState && "hidden"} font-semibold mb-3 text-nowrap`}>Conversations</div>
             <div className="h-[calc(100svh-224px)] overflow-auto ">
               {conversations && conversations.length > 0 ? (
-                conversations.map((item: any) => (
-                  <Link
-                    href={`/conversations/${item.conversation_id}`}
-                    key={item.conversation_id}
-                    className={`${
-                      pathname == `/conversations/${item.conversation_id}` ? "bg-popover" : ""
-                    } p-2 rounded-lg hover:bg-popover transition-all duration-300 flex items-start gap-3 ${
-                      !navState && "justify-center"
-                    }`}
-                  >
-                    <ConversationOnline user={user} from={item.from} to={item.to} conversationId={item.conversation_id}>
-                      <div className="w-10 h-10 shrink-0 rounded-full">
-                        <img src={item.avatar || "/user.png"} alt="user" className="w-10 h-10 rounded-full" />
-                      </div>
-                    </ConversationOnline>
-                    <div className={`${!navState && "hidden"} text-nowrap`}>
-                      <div className="font-semibold line-clamp-1">{item.username}</div>
-                      <div className="text-muted-foreground">{ddmmyyyyhm(item.created_at)}</div>
-                    </div>
-                  </Link>
-                ))
+                conversations.map((item: any) => {
+                  if (item.text) {
+                    return (
+                      <Link
+                        href={`/conversations/${item.conversation_id}`}
+                        key={item.conversation_id}
+                        className={`${
+                          pathname == `/conversations/${item.conversation_id}` ? "bg-popover" : ""
+                        } p-2 rounded-lg hover:bg-popover transition-all duration-300 flex items-start gap-3 ${
+                          !navState && "justify-center"
+                        }`}
+                      >
+                        <ConversationOnline
+                          user={user}
+                          from={item.from}
+                          to={item.to}
+                          conversationId={item.conversation_id}
+                        >
+                          <div className="w-10 h-10 shrink-0 rounded-full">
+                            <img src={item.avatar || "/user.png"} alt="user" className="w-10 h-10 rounded-full" />
+                          </div>
+                        </ConversationOnline>
+                        <div className={`${!navState && "hidden"} text-nowrap`}>
+                          <div className="font-semibold line-clamp-1">{item.username}</div>
+                          <div className="text-muted-foreground">{ddmmyyyyhm(item.created_at)}</div>
+                        </div>
+                      </Link>
+                    );
+                  }
+                })
               ) : (
                 <div className="flex justify-center">
                   <div className="text-sm text-muted-foreground">No Direct Messages</div>

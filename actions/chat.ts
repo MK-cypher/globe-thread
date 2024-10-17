@@ -22,8 +22,10 @@ export const getMessages = async (from = 0, to = MSGS_PER_PAGE) => {
 
 export const sendPublicMsg = async (id: string, text: string) => {
   const supabase = createSupabaseServerClient();
+  const user_id = (await supabase.auth.getUser()).data.user?.id;
+  const {data: public_id} = await supabase.from("users").select("public_id").eq("id", user_id);
 
-  const {error} = await supabase.from("chat").insert([{id, reply_to: id, text}]);
+  const {error} = await supabase.from("chat").insert([{id, reply_to: id, text, public_id}]);
 
   if (error) {
     console.log(error);
