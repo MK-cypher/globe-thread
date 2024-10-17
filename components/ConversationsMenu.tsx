@@ -1,7 +1,7 @@
 "use client";
 import {getUser} from "@/actions/users";
 import {ddmmyyyyhm} from "@/lib/datesFormats";
-import {ArrowLeft, ArrowRight, Globe2Icon} from "lucide-react";
+import {ArrowLeft, ArrowRight, Ghost, Globe2Icon} from "lucide-react";
 import Link from "next/link";
 import GlobalOnline from "./GlobalOnline";
 import ConversationOnline from "./ConversationOnline";
@@ -67,8 +67,7 @@ export default function ConversationsMenu({conversations, user}: {conversations:
             <div className="hr h"></div>
             <div className={`${!navState && "hidden"} font-semibold mb-3 text-nowrap`}>Conversations</div>
             <div className="h-[calc(100svh-224px)] overflow-auto ">
-              {conversations &&
-                conversations.length > 0 &&
+              {conversations && conversations.length > 0 ? (
                 conversations.map((item: any) => (
                   <Link
                     href={`/conversations/${item.conversation_id}`}
@@ -89,7 +88,12 @@ export default function ConversationsMenu({conversations, user}: {conversations:
                       <div className="text-muted-foreground">{ddmmyyyyhm(item.created_at)}</div>
                     </div>
                   </Link>
-                ))}
+                ))
+              ) : (
+                <div className="flex justify-center">
+                  <div className="text-sm text-muted-foreground">No Direct Messages</div>
+                </div>
+              )}
               {/* {scrollTest.map((item, i) => (
                 <Link
                   href={``}

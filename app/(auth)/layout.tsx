@@ -4,6 +4,7 @@ import Link from "next/link";
 import {Metadata} from "next";
 import {ThemeProvider} from "@/components/theme-provider";
 import {metaDataConfig} from "@/lib/utils";
+import Logo from "@/components/Logo";
 
 export const metadata: Metadata = metaDataConfig();
 
@@ -16,11 +17,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <nav className="py-5 fixed w-full container">
             <div className="wrapper">
-              <h1 className="text-3xl">
-                <Link href={"/"}>
-                  <img src="/logo.png" alt="logo" className="w-20 object-cover" />
-                </Link>
-              </h1>
+              <Logo />
             </div>
           </nav>
           {children}
