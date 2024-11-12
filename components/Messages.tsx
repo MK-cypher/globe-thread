@@ -197,16 +197,14 @@ export default function Messages({
       <div
         ref={chatContainerRef}
         onScroll={handleScroll}
-        className="p-2 w-full space-y-5 flex-grow max-h-[calc(100svh-140px)] overflow-auto flex flex-col-reverse scroll-smooth"
+        className="p-2 w-full space-y-5 flex-grow h-[calc(100svh-140px)] overflow-auto flex flex-col-reverse scroll-smooth"
       >
         {optimisticMessages.length > 0 &&
           optimisticMessages.map((item, i) => {
             if (item.text) {
               const diff = dayDifference(item.created_at, optimisticMessages[i + 1]?.created_at);
 
-              // setPreviousMsg(item);
               return (
-                // <>
                 <div key={item.id} className="flex flex-col-reverse">
                   <div key={item.id} className="chat-bubble">
                     {item.from == user?.id ? (
@@ -280,7 +278,6 @@ export default function Messages({
                     </div>
                   )}
                 </div>
-                // </>
               );
             }
           })}
